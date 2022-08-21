@@ -54,6 +54,16 @@ public class JdbcAccountDao implements AccountDao{
 
     }
 
+    @Override
+    public Account findAccountById(Long id) throws AccountNotFoundException {
+        String sql="SELECT account_id, user_id, balance FROM account WHERE account_id=?";
+        SqlRowSet rowSet=jdbcTemplate.queryForRowSet(sql,id);
+        if(rowSet.next()){
+            return mapRowToAccount(rowSet);
+        }
+        throw new AccountNotFoundException("Account for account id " + id +" was not found.");
+    }
+
     private Account mapRowToAccount(SqlRowSet rs) {
         Account account = new Account();
         account.setId(rs.getLong("account_id"));

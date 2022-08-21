@@ -1,1 +1,3 @@
 2022-08-21T13:47:57.2677177 401 : [no body]
+2022-08-21T16:28:17.7283368 Type mismatch affecting row number 0 and column type 'serial': Value [3001] is of type [java.lang.Integer] and cannot be converted to required type [com.techelevator.tenmo.model.Transfer]
+2022-08-21T17:29:39.7194495 Type mismatch affecting row number 0 and column type 'serial': Value [3002] is of type [java.lang.Integer] and cannot be converted to required type [com.techelevator.tenmo.model.Transfer]
