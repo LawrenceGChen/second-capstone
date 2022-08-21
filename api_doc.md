@@ -1,6 +1,6 @@
 # Paths:
 
-## /balance
+## /account
 1. **GET:** returns user account balance
 
 ## /transfers

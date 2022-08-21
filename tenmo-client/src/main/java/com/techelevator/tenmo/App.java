@@ -86,6 +86,8 @@ public class App {
 
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
+//        query account, return balance, print it in console
+
 		
 	}
 

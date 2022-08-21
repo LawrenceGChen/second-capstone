@@ -10,5 +10,5 @@ public interface AccountDao {
 
     List<Account> findAll();
 
-    Account findIdByUser(User user) throws AccountNotFoundException;
+    Account findAccountByUser(User user) throws AccountNotFoundException;
 }

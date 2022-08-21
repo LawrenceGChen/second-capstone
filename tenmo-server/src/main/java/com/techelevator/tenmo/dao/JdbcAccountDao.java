@@ -30,7 +30,7 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public Account findIdByUser(User user) throws AccountNotFoundException {
+    public Account findAccountByUser(User user) throws AccountNotFoundException {
         String sql="SELECT account, user_id, balance FROM account WHERE user_id = ?;";
         SqlRowSet rowSet= jdbcTemplate.queryForRowSet(sql,user.getId());
         if(rowSet.next()){
