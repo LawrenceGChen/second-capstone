@@ -4,10 +4,12 @@ import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.math.BigDecimal;
 
 public class AccountService {
@@ -18,14 +20,25 @@ public class AccountService {
         BASE_URL = url;
     }
 
-    public BigDecimal getBalance (User user){
-        Account account = restTemplate.getForObject(BASE_URL+"/account", Account.class, user);
+    public BigDecimal getBalance (AuthenticatedUser user){
+        Account account = null;
         try {
+            ResponseEntity<Account> response = restTemplate.exchange(BASE_URL+"/account", HttpMethod.GET, makeAuthEntity(user.getToken()), Account.class);
+            account = response.getBody();
             assert account != null;
             return account.getBalance();
         } catch (AssertionError e){
             BasicLogger.log(e.getMessage());
+        } catch (Exception e){
+            e.printStackTrace();
         }
         return null;
     }
+
+    private HttpEntity<Void> makeAuthEntity(String authToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(authToken);
+        return new HttpEntity<>(headers);
+    }
+
 }

@@ -90,10 +90,9 @@ public class App {
     }
 
 	private void viewCurrentBalance() {
-        BigDecimal balance = accountService.getBalance(currentUser.getUser());
-        String formattedBalance = NumberFormat.getCurrencyInstance().format(balance);
-        System.out.println("Your current account balance is: $"+formattedBalance);;
-		
+        BigDecimal balance = accountService.getBalance(currentUser);
+        String formattedBalance = NumberFormat.getCurrencyInstance().format(balance.doubleValue());
+        System.out.println("Your current account balance is: "+formattedBalance);
 	}
 
 	private void viewTransferHistory() {
