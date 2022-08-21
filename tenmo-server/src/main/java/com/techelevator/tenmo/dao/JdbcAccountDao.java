@@ -17,6 +17,10 @@ public class JdbcAccountDao implements AccountDao{
 
     private JdbcTemplate jdbcTemplate;
 
+    public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     @Override
     public List<Account> findAll() {
         List<Account> accounts=new ArrayList<>();
@@ -31,7 +35,7 @@ public class JdbcAccountDao implements AccountDao{
 
     @Override
     public Account findAccountByUser(User user) throws AccountNotFoundException {
-        String sql="SELECT account, user_id, balance FROM account WHERE user_id = ?;";
+        String sql="SELECT account_id, user_id, balance FROM account WHERE user_id = ?;";
         SqlRowSet rowSet= jdbcTemplate.queryForRowSet(sql,user.getId());
         if(rowSet.next()){
             return mapRowToAccount(rowSet);
