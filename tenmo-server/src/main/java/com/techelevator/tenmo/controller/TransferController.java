@@ -42,12 +42,6 @@ public class TransferController {
         return sufficientBalance(transfer) && validAccounts(transfer, principal);
     }
     private boolean sufficientBalance(Transfer transfer) {
-//        try {
-//            return accountDao.findAccountById(transfer.getAccountFrom()).getBalance().compareTo(transfer.getAmount()) > 0;
-//        } catch(AccountNotFoundException e) {
-//            BasicLogger.log(e.getMessage());
-//        }
-
         Account senderAccount;
         try {
             senderAccount = accountDao.findAccountById(transfer.getAccountFrom());
@@ -73,16 +67,12 @@ public class TransferController {
             senderAccount = accountDao.findAccountById(transfer.getAccountFrom());
             recipientAccount = accountDao.findAccountById(transfer.getAccountTo());
             principalAccount = accountDao.findAccountByUsername(principal.getName());
-//            return (transfer.getAccountTo().longValue()!=accountDao.findAccountByUsername(principal.getName()).getId().longValue()&&
-//                    transfer.getAccountFrom().longValue()!=accountDao.findAccountByUsername(principal.getName()).getId().longValue()&&
-//                    transfer.getAccountTo().longValue()!=transfer.getAccountFrom()
-//                    );
         } catch (AccountNotFoundException e) {
             BasicLogger.log(e.getMessage());
         }
 
         if (senderAccount == null || recipientAccount == null){
-            BasicLogger.log("SenderAccount or recipientAccount are null");
+            BasicLogger.log("senderAccount or recipientAccount are null");
             return false;
         }
         if (!senderAccount.equals(principalAccount)){

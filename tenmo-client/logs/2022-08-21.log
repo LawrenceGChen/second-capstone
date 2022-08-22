@@ -6,3 +6,8 @@
 2022-08-21T19:37:31.90393 senderAccount == recipientAccount
 2022-08-21T19:39:05.6792351 PreparedStatementCallback; SQL [BEGIN TRANSACTION;UPDATE account SET balance = balance - ? WHERE account_id=?;UPDATE account SET balance = balance + ? WHERE account_id=?;INSERT INTO transfer(transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (?,?,?,?,?) RETURNING transfer_id;COMMIT;]; No results were returned by the query.; nested exception is org.postgresql.util.PSQLException: No results were returned by the query.
 2022-08-21T19:40:46.5840527 PreparedStatementCallback; SQL [BEGIN TRANSACTION;UPDATE account SET balance = balance - ? WHERE account_id=?;UPDATE account SET balance = balance + ? WHERE account_id=?;INSERT INTO transfer(transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (?,?,?,?,?) RETURNING transfer_id;COMMIT;]; No results were returned by the query.; nested exception is org.postgresql.util.PSQLException: No results were returned by the query.
+2022-08-21T19:45:09.5088518 senderAccount == recipientAccount
+2022-08-21T19:45:30.56639 Account for account id 2005 was not found.
+2022-08-21T19:45:30.56639 SenderAccount or recipientAccount are null
+2022-08-21T19:46:32.9669652 senderAccount != principalAccount
+2022-08-21T19:49:12.6519872 PreparedStatementCallback; SQL [BEGIN TRANSACTION;UPDATE account SET balance = balance - ? WHERE account_id=?;UPDATE account SET balance = balance + ? WHERE account_id=?;INSERT INTO transfer(transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (?,?,?,?,?) RETURNING transfer_id;COMMIT;]; No results were returned by the query.; nested exception is org.postgresql.util.PSQLException: No results were returned by the query.

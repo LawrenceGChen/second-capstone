@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AccountDao {
 
-    List<Account> findAll();
+    List<Account> findAllOther();
 
     Account findAccountByUserId(User user) throws AccountNotFoundException;
 

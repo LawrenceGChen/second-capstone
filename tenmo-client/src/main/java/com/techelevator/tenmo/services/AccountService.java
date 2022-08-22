@@ -7,6 +7,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -22,7 +24,7 @@ public class AccountService {
     public BigDecimal getBalance (AuthenticatedUser user){
         Account account = null;
         try {
-            ResponseEntity<Account> response = restTemplate.exchange(BASE_URL+"/account", HttpMethod.GET, makeAuthEntity(user.getToken()), Account.class);
+            ResponseEntity<Account> response = restTemplate.exchange(BASE_URL+"/myAccount", HttpMethod.GET, makeAuthEntity(user.getToken()), Account.class);
             account = response.getBody();
             assert account != null;
             return account.getBalance();
@@ -32,6 +34,17 @@ public class AccountService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Account[] getAllOtherAccounts(AuthenticatedUser user){
+        Account[] accounts = null;
+        try {
+            ResponseEntity<Account[]> response = restTemplate.exchange(BASE_URL+"/account", HttpMethod.GET, makeAuthEntity(user.getToken()), Account[].class);
+            accounts = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e){
+            BasicLogger.log(e.getMessage());
+        }
+        return accounts;
     }
 
     private HttpEntity<Void> makeAuthEntity(String authToken) {

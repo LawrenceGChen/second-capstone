@@ -28,13 +28,13 @@ public class JdbcTransferDao implements TransferDao{
             newTransfer=jdbcTemplate.queryForObject(sql,
                                                     Transfer.class,
                                                     transfer.getAmount(),
-                                                    transfer.getAccountFrom(),
+                                                    transfer.getSenderAccount().getId(),
                                                     transfer.getAmount(),
-                                                    transfer.getAccountTo(),
+                                                    transfer.getRecipientAccount().getId(),
                                                     transfer.getTransferTypeId(),
                                                     transfer.getTransferStatusId(),
-                                                    transfer.getAccountFrom(),
-                                                    transfer.getAccountTo(),
+                                                    transfer.getSenderAccount().getUserId(),
+                                                    transfer.getRecipientAccount().getUserId(),
                                                     transfer.getAmount().doubleValue());
         }catch(DataAccessException e){
             BasicLogger.log(e.getMessage());
