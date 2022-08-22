@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.model;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Account {
     private Long id;
@@ -31,5 +32,16 @@ public class Account {
         this.balance = balance;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return id.equals(account.id) && userId.equals(account.userId) && balance.equals(account.balance);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, balance);
+    }
 }

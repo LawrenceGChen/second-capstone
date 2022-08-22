@@ -4,6 +4,7 @@ import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.exception.AccountNotFoundException;
 import com.techelevator.tenmo.exception.InvalidTransferException;
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpStatus;
@@ -41,51 +42,59 @@ public class TransferController {
         return sufficientBalance(transfer) && validAccounts(transfer, principal);
     }
     private boolean sufficientBalance(Transfer transfer) {
+//        try {
+//            return accountDao.findAccountById(transfer.getAccountFrom()).getBalance().compareTo(transfer.getAmount()) > 0;
+//        } catch(AccountNotFoundException e) {
+//            BasicLogger.log(e.getMessage());
+//        }
+
+        Account senderAccount;
         try {
-            return accountDao.findAccountById(transfer.getAccountFrom()).getBalance().compareTo(transfer.getAmount()) > 0;
-        } catch(AccountNotFoundException e) {
+            senderAccount = accountDao.findAccountById(transfer.getAccountFrom());
+        } catch (AccountNotFoundException e) {
             BasicLogger.log(e.getMessage());
+            return false;
         }
-        return false;
+
+        if (senderAccount == null) {
+            BasicLogger.log("sufficientBalance() failure: senderAccount == null");
+            return false;
+        }
+
+        return senderAccount.getBalance().compareTo(transfer.getAmount()) >= 0;
     }
 
     private boolean validAccounts(Transfer transfer, Principal principal){
+        Account senderAccount = null;
+        Account recipientAccount = null;
+        Account principalAccount = null;
+
         try {
-            return (transfer.getAccountTo().longValue()!=accountDao.findAccountByUsername(principal.getName()).getId().longValue()&&
-                    transfer.getAccountFrom().longValue()!=accountDao.findAccountByUsername(principal.getName()).getId().longValue()&&
-                    transfer.getAccountTo().longValue()!=transfer.getAccountFrom()
-                    );
+            senderAccount = accountDao.findAccountById(transfer.getAccountFrom());
+            recipientAccount = accountDao.findAccountById(transfer.getAccountTo());
+            principalAccount = accountDao.findAccountByUsername(principal.getName());
+//            return (transfer.getAccountTo().longValue()!=accountDao.findAccountByUsername(principal.getName()).getId().longValue()&&
+//                    transfer.getAccountFrom().longValue()!=accountDao.findAccountByUsername(principal.getName()).getId().longValue()&&
+//                    transfer.getAccountTo().longValue()!=transfer.getAccountFrom()
+//                    );
         } catch (AccountNotFoundException e) {
             BasicLogger.log(e.getMessage());
         }
-        return false;
+
+        if (senderAccount == null || recipientAccount == null){
+            BasicLogger.log("SenderAccount or recipientAccount are null");
+            return false;
+        }
+        if (!senderAccount.equals(principalAccount)){
+            BasicLogger.log("senderAccount != principalAccount");
+            return false;
+        }
+        if (senderAccount.equals(recipientAccount)){
+            BasicLogger.log("senderAccount == recipientAccount");
+            return false;
+        }
+
+        return true;
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
