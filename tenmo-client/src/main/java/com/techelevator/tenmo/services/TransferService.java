@@ -18,18 +18,18 @@ public class TransferService {
         BASE_URL=url;
     }
 
-    public void sendBucks(AuthenticatedUser user, Long senderId, Long recipientId, BigDecimal amount){
-        Transfer transfer = new Transfer();
-        transfer.setTransferTypeId(2L);
-        transfer.setTransferStatusId(2L);
-        transfer.setSenderAccount(senderId);
-        transfer.setRecipientAccount(recipientId);
-        transfer.setAmount(amount);
-        try{
-            HttpEntity<Transfer> requestEntity = new HttpEntity<>(transfer,requestHeaders)
-
-        }
-    }
+//    public void sendBucks(AuthenticatedUser user, Long senderId, Long recipientId, BigDecimal amount){
+//        Transfer transfer = new Transfer();
+//        transfer.setTransferTypeId(2L);
+//        transfer.setTransferStatusId(2L);
+//        transfer.setSenderAccount(senderId);
+//        transfer.setRecipientAccount(recipientId);
+//        transfer.setAmount(amount);
+//        try{
+//            HttpEntity<Transfer> requestEntity = new HttpEntity<>(transfer,requestHeaders);
+//
+//        }
+//    }
 
     private HttpEntity<Void> makeAuthEntity(String authToken) {
         HttpHeaders headers = new HttpHeaders();
