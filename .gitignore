@@ -2,3 +2,4 @@
 .idea/discord.xml
 .idea/
 .idea/sqldialects.xml
+*.log
