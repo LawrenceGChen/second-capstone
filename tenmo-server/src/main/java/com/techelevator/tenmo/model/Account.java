@@ -4,16 +4,16 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Account {
-    private Long id;
+    private Long accountId;
     private Long userId;
     private BigDecimal balance;
 
-    public Long getId() {
-        return id;
+    public Long getAccountId() {
+        return accountId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
 
     public Long getUserId() {
@@ -37,11 +37,11 @@ public class Account {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
-        return id.equals(account.id) && userId.equals(account.userId) && balance.equals(account.balance);
+        return accountId.equals(account.accountId) && userId.equals(account.userId) && balance.equals(account.balance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, balance);
+        return Objects.hash(accountId, userId, balance);
     }
 }

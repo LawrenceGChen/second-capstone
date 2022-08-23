@@ -1,15 +1,12 @@
 package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.UserDao;
-import com.techelevator.tenmo.model.Authority;
 import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserDirectory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 public class UserController {

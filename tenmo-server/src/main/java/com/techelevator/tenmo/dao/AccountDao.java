@@ -14,5 +14,5 @@ public interface AccountDao {
 
     Account findAccountByUsername(String username) throws AccountNotFoundException;
 
-    Account findAccountById(Long id) throws AccountNotFoundException;
+    Account findAccountByAccountId(Long accountId) throws AccountNotFoundException;
 }

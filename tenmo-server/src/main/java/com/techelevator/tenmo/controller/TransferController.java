@@ -8,14 +8,12 @@ import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.lang.Number;
 
 //TODO Fix AccountId and UserId swapped
 
@@ -46,9 +44,9 @@ public class TransferController {
     private boolean sufficientBalance(Transfer transfer) {
         Account senderAccount;
         try {
-            senderAccount = accountDao.findAccountById(transfer.getSenderAccount().getUserId());
+            senderAccount = accountDao.findAccountByAccountId(transfer.getSenderAccount().getAccountId());
         } catch (AccountNotFoundException e) {
-            BasicLogger.log(e.getMessage());
+            BasicLogger.log("findaccountbyid"+e.getMessage());
             return false;
         }
 
@@ -66,8 +64,8 @@ public class TransferController {
         Account principalAccount = null;
 
         try {
-            senderAccount = accountDao.findAccountById(transfer.getSenderAccount().getUserId());
-            recipientAccount = accountDao.findAccountById(transfer.getRecipientAccount().getUserId());
+            senderAccount = accountDao.findAccountByAccountId(transfer.getSenderAccount().getAccountId());
+            recipientAccount = accountDao.findAccountByAccountId(transfer.getRecipientAccount().getAccountId());
             principalAccount = accountDao.findAccountByUsername(principal.getName());
         } catch (AccountNotFoundException e) {
             BasicLogger.log(e.getMessage());

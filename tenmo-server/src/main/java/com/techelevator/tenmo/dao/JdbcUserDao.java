@@ -1,7 +1,6 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserDirectory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -104,14 +103,14 @@ public class JdbcUserDao implements UserDao {
 
     private User mapRowToIdAndUsername(SqlRowSet rowSet) {
         User user = new User();
-        user.setId(rowSet.getLong("user_id"));
+        user.setUserId(rowSet.getLong("user_id"));
         user.setUsername(rowSet.getString("username"));
         return user;
     }
 
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
-        user.setId(rs.getLong("user_id"));
+        user.setUserId(rs.getLong("user_id"));
         user.setUsername(rs.getString("username"));
         user.setPassword(rs.getString("password_hash"));
         user.setActivated(true);

@@ -36,7 +36,7 @@ public class JdbcAccountDao implements AccountDao{
     @Override
     public Account findAccountByUserId(User user) throws AccountNotFoundException {
         String sql="SELECT account_id, user_id, balance FROM account WHERE user_id = ?;";
-        SqlRowSet rowSet= jdbcTemplate.queryForRowSet(sql,user.getId());
+        SqlRowSet rowSet= jdbcTemplate.queryForRowSet(sql,user.getUserId());
         if(rowSet.next()){
             return mapRowToAccount(rowSet);
         }
@@ -55,18 +55,18 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public Account findAccountById(Long id) throws AccountNotFoundException {
+    public Account findAccountByAccountId(Long accountId) throws AccountNotFoundException {
         String sql="SELECT account_id, user_id, balance FROM account WHERE account_id=?";
-        SqlRowSet rowSet=jdbcTemplate.queryForRowSet(sql,id);
+        SqlRowSet rowSet=jdbcTemplate.queryForRowSet(sql,accountId);
         if(rowSet.next()){
             return mapRowToAccount(rowSet);
         }
-        throw new AccountNotFoundException("Account for account id " + id +" was not found.");
+        throw new AccountNotFoundException("Account for account id " + accountId +" was not found.");
     }
 
     private Account mapRowToAccount(SqlRowSet rs) {
         Account account = new Account();
-        account.setId(rs.getLong("account_id"));
+        account.setAccountId(rs.getLong("account_id"));
         account.setUserId(rs.getLong("user_id"));
         account.setBalance(rs.getBigDecimal("balance"));
         return account;

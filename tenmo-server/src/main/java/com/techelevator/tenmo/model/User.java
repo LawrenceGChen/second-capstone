@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class User {
 
-   private Long id;
+   private Long userId;
    private String username;
    private String password;
    private boolean activated;
@@ -14,19 +14,19 @@ public class User {
 
    public User() { }
 
-   public User(Long id, String username, String password, String authorities) {
-      this.id = id;
+   public User(Long userId, String username, String password, String authorities) {
+      this.userId = userId;
       this.username = username;
       this.password = password;
       this.activated = true;
    }
 
-   public Long getId() {
-      return id;
+   public Long getUserId() {
+      return userId;
    }
 
-   public void setId(Long id) {
-      this.id = id;
+   public void setUserId(Long userId) {
+      this.userId = userId;
    }
 
    public String getUsername() {
@@ -73,7 +73,7 @@ public class User {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
       User user = (User) o;
-      return id == user.id &&
+      return userId == user.userId &&
               activated == user.activated &&
               Objects.equals(username, user.username) &&
               Objects.equals(password, user.password) &&
@@ -82,13 +82,13 @@ public class User {
 
    @Override
    public int hashCode() {
-      return Objects.hash(id, username, password, activated, authorities);
+      return Objects.hash(userId, username, password, activated, authorities);
    }
 
    @Override
    public String toString() {
       return "User{" +
-              "id=" + id +
+              "id=" + userId +
               ", username='" + username + '\'' +
               ", activated=" + activated +
               ", authorities=" + authorities +
