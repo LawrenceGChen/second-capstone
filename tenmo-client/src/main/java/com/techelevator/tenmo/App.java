@@ -107,8 +107,8 @@ public class App {
 
 	private void sendBucks() {
 		// TODO Auto-generated method stub
-        consoleService.printSendBucksMenuHeader();
-        consoleService.printUsers(accountService.getAllOtherAccounts(currentUser));
+        consoleService.printSendBucksMenu(/* call account service to return list of users*/);
+
         //List all users
 
         // prompt for menu choice of account/user

@@ -2,6 +2,7 @@ package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -45,6 +46,17 @@ public class AccountService {
             BasicLogger.log(e.getMessage());
         }
         return accounts;
+    }
+
+    public User[] getAllOtherUsers(AuthenticatedUser user){
+        User[] users = null;
+        try {
+            ResponseEntity<User[]> response = restTemplate.exchange(BASE_URL+"/user", HttpMethod.GET, makeAuthEntity(user.getToken()), User[].class);
+            users = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e){
+            BasicLogger.log(e.getMessage());
+        }
+        return users;
     }
 
     private HttpEntity<Void> makeAuthEntity(String authToken) {

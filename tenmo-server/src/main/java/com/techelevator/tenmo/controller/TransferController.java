@@ -44,7 +44,7 @@ public class TransferController {
     private boolean sufficientBalance(Transfer transfer) {
         Account senderAccount;
         try {
-            senderAccount = accountDao.findAccountById(transfer.getAccountFrom());
+            senderAccount = accountDao.findAccountById(transfer.getSenderAccount().getUserId());
         } catch (AccountNotFoundException e) {
             BasicLogger.log(e.getMessage());
             return false;
@@ -64,8 +64,8 @@ public class TransferController {
         Account principalAccount = null;
 
         try {
-            senderAccount = accountDao.findAccountById(transfer.getAccountFrom());
-            recipientAccount = accountDao.findAccountById(transfer.getAccountTo());
+            senderAccount = accountDao.findAccountById(transfer.getSenderAccount().getUserId());
+            recipientAccount = accountDao.findAccountById(transfer.getRecipientAccount().getUserId());
             principalAccount = accountDao.findAccountByUsername(principal.getName());
         } catch (AccountNotFoundException e) {
             BasicLogger.log(e.getMessage());
