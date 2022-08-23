@@ -106,12 +106,9 @@ public class App {
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
-        consoleService.printSendBucksMenu(/* call account service to return list of users*/);
-
-        //List all users
-
+        consoleService.printSendBucksMenu(accountService.getAllOtherUsers(currentUser),currentUser.getUser());
         // prompt for menu choice of account/user
+        
         // prompt for dollar amount
         // send transfer request
         // profit!

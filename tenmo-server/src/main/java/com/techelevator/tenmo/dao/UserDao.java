@@ -16,4 +16,6 @@ public interface UserDao {
     boolean create(String username, String password);
 
     List<User> findAllUsernamesAndIds(Principal principal);
+
+    User findByUsernameWithoutPassword(String username);
 }
