@@ -37,6 +37,21 @@ public class AccountService {
         return null;
     }
 
+    public Long getLoggedInAccountId(AuthenticatedUser user){
+        Account account = null;
+        try{
+            ResponseEntity<Account> response = restTemplate.exchange(BASE_URL+"/myAccount",HttpMethod.GET, makeAuthEntity(user.getToken()), Account.class);
+            account= response.getBody();
+            assert account!=null;
+            return account.getId();
+        } catch (AssertionError e){
+            BasicLogger.log(e.getMessage());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Account[] getAllOtherAccounts(AuthenticatedUser user){
         Account[] accounts = null;
         try {

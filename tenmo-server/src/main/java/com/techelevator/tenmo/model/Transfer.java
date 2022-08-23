@@ -14,17 +14,12 @@ public class Transfer {
     @Min(value=1)
     @Max(value=3)
     private Long transferStatusId;
-//    @Positive
-//    private Long accountFrom;
-//
-//    @Positive
-//    private Long accountTo;
-
     @NotNull
     private Account senderAccount;
-
     @NotNull
     private Account recipientAccount;
+    @Positive
+    private BigDecimal amount;
 
     public Account getSenderAccount() {
         return senderAccount;
@@ -41,9 +36,6 @@ public class Transfer {
     public void setRecipientAccount(Account recipientAccount) {
         this.recipientAccount = recipientAccount;
     }
-
-    @Positive
-    private BigDecimal amount;
 
     public Long getTransferId() {
         return transferId;
@@ -68,22 +60,6 @@ public class Transfer {
     public void setTransferStatusId(Long transferStatusId) {
         this.transferStatusId = transferStatusId;
     }
-
-//    public Long getAccountFrom() {
-//        return accountFrom;
-//    }
-//
-//    public void setAccountFrom(Long accountFrom) {
-//        this.accountFrom = accountFrom;
-//    }
-//
-//    public Long getAccountTo() {
-//        return accountTo;
-//    }
-//
-//    public void setAccountTo(Long accountTo) {
-//        this.accountTo = accountTo;
-//    }
 
     public BigDecimal getAmount() {
         return amount;

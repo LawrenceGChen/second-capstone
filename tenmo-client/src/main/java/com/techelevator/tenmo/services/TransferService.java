@@ -1,11 +1,14 @@
 package com.techelevator.tenmo.services;
 
+import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.Arrays;
 
 public class TransferService {
     private final String BASE_URL;
@@ -15,10 +18,22 @@ public class TransferService {
         BASE_URL=url;
     }
 
-    public void sendBucks(Principal principal, Long userId, BigDecimal amount){
+    public void sendBucks(AuthenticatedUser user, Long senderId, Long recipientId, BigDecimal amount){
         Transfer transfer = new Transfer();
-        transfer.setAccountTo(userId);
+        transfer.setTransferTypeId(2L);
+        transfer.setTransferStatusId(2L);
+        transfer.setSenderAccount(senderId);
+        transfer.setRecipientAccount(recipientId);
         transfer.setAmount(amount);
-        //Todo get the principal account Id
+        try{
+            HttpEntity<Transfer> requestEntity = new HttpEntity<>(transfer,requestHeaders)
+
+        }
+    }
+
+    private HttpEntity<Void> makeAuthEntity(String authToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(authToken);
+        return new HttpEntity<>(headers);
     }
 }
