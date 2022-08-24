@@ -52,6 +52,21 @@ public class AccountService {
         return null;
     }
 
+    public Account getLoggedInAccount(AuthenticatedUser user) {
+        Account account = null;
+        try{
+            ResponseEntity<Account> response = restTemplate.exchange(BASE_URL+"/myAccount",HttpMethod.GET, makeAuthEntity(user.getToken()), Account.class);
+            account= response.getBody();
+            assert account!=null;
+            return account;
+        } catch (AssertionError e){
+            BasicLogger.log(e.getMessage());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Account[] getAllOtherAccounts(AuthenticatedUser user){
         Account[] accounts = null;
         try {
@@ -79,5 +94,4 @@ public class AccountService {
         headers.setBearerAuth(authToken);
         return new HttpEntity<>(headers);
     }
-
 }

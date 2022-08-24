@@ -1,5 +1,6 @@
 package com.techelevator.tenmo;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
@@ -112,55 +113,52 @@ public class App {
 
 	private void sendBucks() {
         User[] otherUsers = accountService.getAllOtherUsers(currentUser);
+        Account[] otherAccounts = accountService.getAllOtherAccounts(currentUser);
         consoleService.printSendBucksMenu(otherUsers, currentUser.getUser());
 
         // prompt for menu choice of account/user
         int selection = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel):");
-        if (selection == 0){
+        if (selection == 0) {
             return;
         }
-        boolean userFound = false;
-        for (User user:otherUsers){
+        User recipientUser = new User();
+        Account recipientAccount = new Account();
+        for (User user : otherUsers) {
             if (Objects.equals(user.getUserId(), (long) selection) /*might need this Long.valueOf(selection)*/) {
-                userFound = true;
-                break;
+                recipientUser = user;
+                //If recipient user is found, also find their account.
+                for (Account account : otherAccounts) {
+                    if (Objects.equals(account.getUserId(), recipientUser.getUserId())) {
+                        recipientAccount = account;
+                    }
+                    break;
+                }
+            }
+            if (recipientUser.getUsername() == null) {
+                System.out.println("User was not found. Please try again.");
+                sendBucks();
+            }
+            //Prompt for transfer amount
+            BigDecimal transferAmount = consoleService.promptForBigDecimal("Enter amount: ");
+            //Validate transfer input
+            switch (transferService.validateTransferAmount(transferAmount, accountService.getBalance(currentUser))) {
+                case -1:
+                    System.out.println("Insufficient funds for this transfer. Please try again.");
+                    sendBucks();
+                    break;
+                case 0:
+                    System.out.println("That was not a valid dollar amount. Please try again.");
+                    sendBucks();
+                    break;
+                case 1:
+                    //Send transfer to server
+                    transferService.sendBucks(  currentUser,
+                                                accountService.getLoggedInAccount(currentUser),
+                                                recipientAccount,
+                                                transferAmount);
             }
         }
-        if (!userFound){
-            System.out.println("User was not found. Please try again.");
-            sendBucks();
-        }
-
-
-        // validate
-
-        // prompt for dollar amount
-        BigDecimal transferAmount = consoleService.promptForBigDecimal("Enter amount: ");
-        switch (transferService.validateTransferAmount(transferAmount, accountService.getBalance(currentUser))){
-            case -1:
-                //nsf
-                System.out.println("Insufficient funds for this transfer. Please try again.");
-                sendBucks();
-                break;
-            case 0:
-                // bad number
-                System.out.println("That was not a valid dollar amount. Please try again.");
-                sendBucks();
-                break;
-            case 1:
-                //good
-                // sendmoney();
-
-        }
-
-
-        System.out.println("got " + transferAmount.toString());//delete this
-        //validate
-
-        // send transfer request
-        // profit!
-		
-	}
+    }
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub
