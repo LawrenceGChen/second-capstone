@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,13 +22,14 @@ public class UserController {
 
     @GetMapping(value = "user")
     public List<User> findAllUsernamesAndIds(Principal principal){
-        List<User> users = userDao.findAllUsernamesAndIds(principal);
+        List<User> allUsers = userDao.findAllUsernamesAndIds(principal);
+        List<User> otherUsers = new ArrayList<>();
         User currentUser = userDao.findByUsernameWithoutPassword(principal.getName());
-        for(User user:users){
-            if(user.getUsername().equals(currentUser.getUsername())){
-                users.remove(user);
+        for(User user:allUsers){
+            if(!user.getUsername().equals(currentUser.getUsername())){
+                otherUsers.add(user);
             }
         }
-        return users;
+        return otherUsers;
     }
 }
