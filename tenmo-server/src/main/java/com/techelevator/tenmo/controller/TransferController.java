@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.security.Principal;
 
-//TODO Fix AccountId and UserId swapped
-
 @RestController
 public class TransferController {
     private TransferDao transferDao;
@@ -46,7 +44,7 @@ public class TransferController {
         try {
             senderAccount = accountDao.findAccountByAccountId(transfer.getSenderAccount().getAccountId());
         } catch (AccountNotFoundException e) {
-            BasicLogger.log("findaccountbyid"+e.getMessage());
+            BasicLogger.log("findAccountByAccountId: "+e.getMessage());
             return false;
         }
 
