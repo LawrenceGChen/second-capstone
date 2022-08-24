@@ -4,6 +4,7 @@ import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.exception.AccountNotFoundException;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.util.BasicLogger;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +12,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
+@PreAuthorize("isAuthenticated()")
 public class AccountController {
 
     private AccountDao accountDao;

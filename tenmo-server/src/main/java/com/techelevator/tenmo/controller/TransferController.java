@@ -8,6 +8,7 @@ import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
+@PreAuthorize("isAuthenticated()")
 public class TransferController {
     private TransferDao transferDao;
     private AccountDao accountDao;
@@ -55,7 +57,6 @@ public class TransferController {
 
         return senderAccount.getBalance().compareTo(transfer.getAmount()) >= 0;
     }
-
     private boolean validAccounts(Transfer transfer, Principal principal){
         Account senderAccount = null;
         Account recipientAccount = null;

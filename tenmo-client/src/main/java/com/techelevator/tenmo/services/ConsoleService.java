@@ -50,9 +50,11 @@ public class ConsoleService {
     public void printSendBucksMenu(User[] users, User currentUser){
         System.out.println("-------------------------------------------");
         System.out.println("Users");
-        System.out.println("ID          Name");
+        System.out.printf("%-12s%s%n","ID","Name");
         System.out.println("-------------------------------------------");
         printUsersIdAndUsername(users, currentUser);
+        System.out.println("---------");
+
     }
 
     public UserCredentials promptForCredentials() {

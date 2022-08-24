@@ -1,6 +1,7 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
@@ -92,7 +93,7 @@ public class App {
 	private void viewCurrentBalance() {
         BigDecimal balance = accountService.getBalance(currentUser);
         String formattedBalance = NumberFormat.getCurrencyInstance().format(balance.doubleValue());
-        System.out.println("Your current account balance is: "+formattedBalance);
+        System.out.println("Your current account balance is: "+ formattedBalance);
 	}
 
 	private void viewTransferHistory() {
@@ -102,14 +103,24 @@ public class App {
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
+        // optional feature
 		
 	}
 
 	private void sendBucks() {
-        consoleService.printSendBucksMenu(accountService.getAllOtherUsers(currentUser),currentUser.getUser());
+        User[] otherUsers = accountService.getAllOtherUsers(currentUser);
+        consoleService.printSendBucksMenu(otherUsers, currentUser.getUser());
+
         // prompt for menu choice of account/user
-        
+        long selection = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel):");
+        System.out.println("got " + selection);
+        // validate
+
         // prompt for dollar amount
+        BigDecimal amountToSend = consoleService.promptForBigDecimal("Enter amount: ");
+        System.out.println("got " + amountToSend.toString());
+        //validate
+
         // send transfer request
         // profit!
 		
@@ -117,6 +128,7 @@ public class App {
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub
+        // optional feature
 		
 	}
 
