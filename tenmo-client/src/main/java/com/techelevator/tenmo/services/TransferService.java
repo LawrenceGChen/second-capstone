@@ -31,6 +31,16 @@ public class TransferService {
 //        }
 //    }
 
+    public int validateTransferAmount(BigDecimal transferAmount, BigDecimal accountBalance){
+        if (transferAmount.compareTo(BigDecimal.valueOf(0))<=0){
+            return 0;
+        };
+        if (transferAmount.compareTo(accountBalance)<0){
+            return -1;
+        }
+        return 1;
+    }
+
     private HttpEntity<Void> makeAuthEntity(String authToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authToken);

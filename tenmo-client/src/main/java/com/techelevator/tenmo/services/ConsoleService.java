@@ -102,7 +102,7 @@ public class ConsoleService {
     public void printUsersIdAndUsername(User[] users, User currentUser) {
                 for (User user: users){
                     if (!currentUser.equals(user)){
-                        System.out.printf("%-12d%s%n",user.getId(),user.getUsername());
+                        System.out.printf("%-12d%s%n",user.getUserId(),user.getUsername());
                     }
                 }
     }

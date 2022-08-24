@@ -6,9 +6,11 @@ import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.tenmo.services.TransferService;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.Objects;
 
 public class App {
 
@@ -18,6 +20,7 @@ public class App {
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
 
     private final AccountService accountService = new AccountService(API_BASE_URL);
+    private final TransferService transferService = new TransferService(API_BASE_URL);
     private AuthenticatedUser currentUser;
 
     public static void main(String[] args) {
@@ -112,13 +115,46 @@ public class App {
         consoleService.printSendBucksMenu(otherUsers, currentUser.getUser());
 
         // prompt for menu choice of account/user
-        long selection = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel):");
-        System.out.println("got " + selection);
+        int selection = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel):");
+        if (selection == 0){
+            return;
+        }
+        boolean userFound = false;
+        for (User user:otherUsers){
+            if (Objects.equals(user.getUserId(), (long) selection) /*might need this Long.valueOf(selection)*/) {
+                userFound = true;
+                break;
+            }
+        }
+        if (!userFound){
+            System.out.println("User was not found. Please try again.");
+            sendBucks();
+        }
+
+
         // validate
 
         // prompt for dollar amount
-        BigDecimal amountToSend = consoleService.promptForBigDecimal("Enter amount: ");
-        System.out.println("got " + amountToSend.toString());
+        BigDecimal transferAmount = consoleService.promptForBigDecimal("Enter amount: ");
+        switch (transferService.validateTransferAmount(transferAmount, accountService.getBalance(currentUser))){
+            case -1:
+                //nsf
+                System.out.println("Insufficient funds for this transfer. Please try again.");
+                sendBucks();
+                break;
+            case 0:
+                // bad number
+                System.out.println("That was not a valid dollar amount. Please try again.");
+                sendBucks();
+                break;
+            case 1:
+                //good
+                // sendmoney();
+
+        }
+
+
+        System.out.println("got " + transferAmount.toString());//delete this
         //validate
 
         // send transfer request
