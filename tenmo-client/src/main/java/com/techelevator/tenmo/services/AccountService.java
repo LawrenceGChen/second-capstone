@@ -43,7 +43,7 @@ public class AccountService {
             ResponseEntity<Account> response = restTemplate.exchange(BASE_URL+"/myAccount",HttpMethod.GET, makeAuthEntity(user.getToken()), Account.class);
             account= response.getBody();
             assert account!=null;
-            return account.getId();
+            return account.getAccountId();
         } catch (AssertionError e){
             BasicLogger.log(e.getMessage());
         } catch (Exception e){
