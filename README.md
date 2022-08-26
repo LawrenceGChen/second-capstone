@@ -15,8 +15,8 @@ You should attempt to complete all of the following required use cases.
    1. Logging in returns an Authentication Token. I need to include this token with all my subsequent interactions with the system outside of registering and logging in.
    2. The ability to log in has been provided in your starter code.
 3. **[COMPLETE]** As an authenticated user of the system, I need to be able to see my Account Balance.
-4. As an authenticated user of the system, I need to be able to *send* a transfer of a specific amount of TE Bucks to a registered user.
-   1. I should be able to choose from a list of users to send TE Bucks to.
+4. **[COMPLETE]** As an authenticated user of the system, I need to be able to *send* a transfer of a specific amount of TE Bucks to a registered user.
+   1. **[COMPLETE]** I should be able to choose from a list of users to send TE Bucks to.
    2. **[COMPLETE]** I must not be allowed to send money to myself.
    3. **[COMPLETE]** A transfer includes the User IDs of the from and to users and the amount of TE Bucks.
    4. **[COMPLETE]** The receiver's account balance is increased by the amount of the transfer.
