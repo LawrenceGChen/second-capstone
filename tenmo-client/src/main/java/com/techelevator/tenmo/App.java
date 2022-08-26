@@ -124,39 +124,40 @@ public class App {
         User recipientUser = new User();
         Account recipientAccount = new Account();
         for (User user : otherUsers) {
-            if (Objects.equals(user.getUserId(), (long) selection) /*might need this Long.valueOf(selection)*/) {
-                recipientUser = user;
+            if (user.getUserId() == selection) {
+                recipientUser.setUserId(user.getUserId());
+                recipientUser.setUsername(user.getUsername());
                 //If recipient user is found, also find their account.
                 for (Account account : otherAccounts) {
                     if (Objects.equals(account.getUserId(), recipientUser.getUserId())) {
                         recipientAccount = account;
+                        break;
                     }
-                    break;
                 }
             }
-            if (recipientUser.getUsername() == null) {
-                System.out.println("User was not found. Please try again.");
+        }
+        if (recipientUser.getUsername() == null) {
+            System.out.println("User was not found. Please try again.");
+            sendBucks();
+        }
+        //Prompt for transfer amount
+        BigDecimal transferAmount = consoleService.promptForBigDecimal("Enter amount: ");
+        //Validate transfer input
+        switch (transferService.validateTransferAmount(transferAmount, accountService.getBalance(currentUser))) {
+            case -1:
+                System.out.println("Insufficient funds for this transfer. Please try again.");
                 sendBucks();
-            }
-            //Prompt for transfer amount
-            BigDecimal transferAmount = consoleService.promptForBigDecimal("Enter amount: ");
-            //Validate transfer input
-            switch (transferService.validateTransferAmount(transferAmount, accountService.getBalance(currentUser))) {
-                case -1:
-                    System.out.println("Insufficient funds for this transfer. Please try again.");
-                    sendBucks();
-                    break;
-                case 0:
-                    System.out.println("That was not a valid dollar amount. Please try again.");
-                    sendBucks();
-                    break;
-                case 1:
-                    //Send transfer to server
-                    transferService.sendBucks(  currentUser,
-                                                accountService.getLoggedInAccount(currentUser),
-                                                recipientAccount,
-                                                transferAmount);
-            }
+                break;
+            case 0:
+                System.out.println("That was not a valid dollar amount. Please try again.");
+                sendBucks();
+                break;
+            case 1:
+                //Send transfer to server
+                transferService.sendBucks(  currentUser,
+                                            accountService.getLoggedInAccount(currentUser),
+                                            recipientAccount,
+                                            transferAmount);
         }
     }
 
