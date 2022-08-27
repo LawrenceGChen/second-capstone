@@ -79,16 +79,16 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
-    public TransferDTO getTransferById(Long id){
-        TransferDTO transferDTO;
+    public TransferDTO getTransferById(Long transferId){
         @Language("SQL")
-        String sql="SELECT t.transfer_id, tt.transfer_type_desc, ts.transfer_status_desc, t.amount, t.account_from, t.account_to " +
+        String sql="SELECT t.transfer_id, t.transfer_type_id, t.transfer_status_id, t.amount, t.account_from, t.account_to " +
                 "FROM transfer t " +
-                "JOIN transfer_status ts ON ts.transfer_status_id = t.transfer_status_id " +
-                "JOIN transfer_type tt ON tt.transfer_type_id = t.transfer_type_id " +
                 "WHERE t.transfer_id = ?;";
-        transferDTO=jdbcTemplate.queryForObject(sql,TransferDTO.class,id);
-        return transferDTO;
+        SqlRowSet result=jdbcTemplate.queryForRowSet(sql,transferId);
+        if(result.next()) {
+            return mapRowToIncompleteTransferDTO(result);
+        }
+        return null;
     }
 
     private TransferDTO mapRowToTransferDTOSent(SqlRowSet rs,User user) {
@@ -107,6 +107,17 @@ public class JdbcTransferDao implements TransferDao{
         transferDTO.setUsernameFrom(rs.getString("username"));
         transferDTO.setUsernameTo(user.getUsername());
         transferDTO.setAmount(rs.getBigDecimal("amount"));
+        return transferDTO;
+    }
+
+    private TransferDTO mapRowToIncompleteTransferDTO(SqlRowSet rs){
+        TransferDTO transferDTO=new TransferDTO();
+        transferDTO.setTransferId(rs.getLong("transfer_id"));
+        transferDTO.setTransferTypeId(rs.getLong("transfer_type_id"));
+        transferDTO.setTransferStatusId(rs.getLong("transfer_status_id"));
+        transferDTO.setAmount(rs.getBigDecimal("amount"));
+        transferDTO.setAccountFromId(rs.getLong("account_from"));
+        transferDTO.setAccountToId(rs.getLong("account_to"));
         return transferDTO;
     }
 }

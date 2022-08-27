@@ -106,7 +106,7 @@ public class JdbcUserDao implements UserDao {
     @Override
     public String findUsernameByAccountId(Long accountId){
         @Language("SQL")
-        String sql= "SELECT tenmo_user.username FROM tenmo_user tu JOIN account a ON a.user_id = tu.user_id WHERE a.account_id = ?;";
+        String sql= "SELECT tu.username FROM tenmo_user tu JOIN account a ON a.user_id = tu.user_id WHERE a.account_id = ?;";
         return jdbcTemplate.queryForObject(sql,String.class,accountId);
     }
 

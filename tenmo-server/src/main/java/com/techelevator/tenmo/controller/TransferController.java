@@ -48,7 +48,7 @@ public class TransferController {
         return transferDao.getTransfersByUser(myUser);
     }
 
-    @GetMapping("/myAccount/transfers/{id}")
+    @GetMapping("/myAccount/transfers/{transferId}")
     public TransferDTO getTransferById(@PathVariable Long transferId,Principal principal){
         TransferDTO transferDTO=transferDao.getTransferById(transferId);
         transferDTO.setUsernameFrom(userDao.findUsernameByAccountId(transferDTO.getAccountFromId()));
