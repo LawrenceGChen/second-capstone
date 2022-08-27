@@ -66,7 +66,7 @@ public class JdbcTransferDao implements TransferDao{
                 "FROM transfer " +
                 "JOIN account ON transfer.account_from = account.account_id " +
                 "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
-                "WHERE transfer.account_from=(SELECT account_id FROM account JOIN tenmo_user ON account.user_id=tenmo_user.user_id WHERE tenmo_user.user_id=?)";
+                "WHERE transfer.account_to=(SELECT account_id FROM account JOIN tenmo_user ON account.user_id=tenmo_user.user_id WHERE tenmo_user.user_id=?)";
         results = jdbcTemplate.queryForRowSet(sql, user.getUserId());
         while(results.next()){
             transferDTOs.add(mapRowToTransferDTOReceived(results,user));
