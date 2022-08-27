@@ -1,23 +1,16 @@
 package com.techelevator.tenmo.model;
 
-import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 public class TransferDTO implements Comparable<TransferDTO>{
-    private Long transferId;
-    @NotEmpty
-    private String usernameFrom;
-    @NotEmpty
-    private String usernameTo;
-    @Min(value=1)
-    @Max(value=2)
-    private Long transferTypeId;
-    @Min(value=1)
-    @Max(value=3)
-    private Long transferStatusId;
-    @Positive
-    private BigDecimal amount;
 
+    private Long transferId;
+    private String usernameFrom;
+    private String usernameTo;
+        private Long transferTypeId;
+    private Long transferStatusId;
+    private BigDecimal amount;
     private boolean fromPrincipal;
 
     public boolean isFromPrincipal() {
@@ -74,6 +67,15 @@ public class TransferDTO implements Comparable<TransferDTO>{
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public void printMyTransfer(){
+        String transferDetails;
+        String toOrFrom = fromPrincipal? "From: " : "To: ";
+        String otherUser = fromPrincipal? this.usernameTo : this.usernameFrom;
+        transferDetails = String.format("%-12d%-6s%-17s", this.getTransferId(), toOrFrom, otherUser);
+        transferDetails += NumberFormat.getCurrencyInstance().format(this.getAmount());
+        System.out.println(transferDetails);
     }
 
     @Override

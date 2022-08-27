@@ -1,10 +1,12 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.TransferDTO;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleService {
@@ -53,6 +55,19 @@ public class ConsoleService {
         System.out.printf("%-12s%s%n","ID","Name");
         System.out.println("-------------------------------------------");
         printUsersIdAndUsername(users, currentUser);
+        System.out.println("---------");
+
+    }
+
+    public void printTransferHistory(TransferDTO[] transferDTOS){
+        System.out.println("-------------------------------------------");
+        System.out.println("Transfers");
+        System.out.println("ID          From/To                 Amount");
+        System.out.println("-------------------------------------------");
+        for (TransferDTO transferDTO :
+                transferDTOS) {
+            transferDTO.printMyTransfer();
+        }
         System.out.println("---------");
 
     }

@@ -81,6 +81,7 @@ public class JdbcTransferDao implements TransferDao{
         transferDTO.setUsernameFrom(user.getUsername());
         transferDTO.setUsernameTo(rs.getString("username"));
         transferDTO.setAmount(rs.getBigDecimal("amount"));
+        transferDTO.setFromPrincipal(true);
         return transferDTO;
     }
 
