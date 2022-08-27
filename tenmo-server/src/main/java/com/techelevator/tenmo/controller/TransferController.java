@@ -5,6 +5,7 @@ import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.exception.AccountNotFoundException;
 import com.techelevator.tenmo.exception.InvalidTransferException;
+import com.techelevator.tenmo.exception.UnauthorizedException;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.TransferDTO;
@@ -50,7 +51,7 @@ public class TransferController {
     }
 
     @GetMapping("/myAccount/transfers/{transferId}")
-    public TransferDTO getTransferById(@PathVariable Long transferId,Principal principal){
+    public TransferDTO getTransferById(@PathVariable Long transferId,Principal principal) throws UnauthorizedException {
         TransferDTO transferDTO=transferDao.getTransferById(transferId);
         transferDTO.setUsernameFrom(userDao.findUsernameByAccountId(transferDTO.getAccountFromId()));
         transferDTO.setUsernameTo(userDao.findUsernameByAccountId(transferDTO.getAccountToId()));
