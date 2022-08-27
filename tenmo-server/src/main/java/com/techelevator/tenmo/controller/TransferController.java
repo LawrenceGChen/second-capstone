@@ -55,12 +55,12 @@ public class TransferController {
         TransferDTO transferDTO=transferDao.getTransferById(transferId);
         transferDTO.setUsernameFrom(userDao.findUsernameByAccountId(transferDTO.getAccountFromId()));
         transferDTO.setUsernameTo(userDao.findUsernameByAccountId(transferDTO.getAccountToId()));
-        if(transferDTO.getUsernameFrom().equals(principal.getName())||transferDTO.getUsernameTo().equals(principal.getName())) {
-            return transferDTO;
-        }
-        else{
+
+        if(!transferDTO.getUsernameFrom().equals(principal.getName())&&!transferDTO.getUsernameTo().equals(principal.getName())) {
             throw new UnauthorizedException("You are not authorized to view transfers in which you are not involved.");
         }
+
+        return transferDTO;
     }
 
 
