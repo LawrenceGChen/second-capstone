@@ -12,6 +12,7 @@ import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -53,8 +54,15 @@ public class TransferController {
         TransferDTO transferDTO=transferDao.getTransferById(transferId);
         transferDTO.setUsernameFrom(userDao.findUsernameByAccountId(transferDTO.getAccountFromId()));
         transferDTO.setUsernameTo(userDao.findUsernameByAccountId(transferDTO.getAccountToId()));
-        return transferDTO;
+        if(transferDTO.getUsernameFrom().equals(principal.getName())||transferDTO.getUsernameTo().equals(principal.getName())) {
+            return transferDTO;
+        }
+        else{
+            throw new UnauthorizedException("You are not authorized to view transfers in which you are not involved.");
+        }
     }
+
+
 
     private boolean validTransfer(Transfer transfer, Principal principal){
         return sufficientBalance(transfer) && validAccounts(transfer, principal);

@@ -60,6 +60,12 @@ public class TransferService {
         return transferDTOS;
     }
 
+    public TransferDTO getTransferById(AuthenticatedUser user){
+        TransferDTO transferDTO=new TransferDTO();
+
+        return transferDTO;
+    }
+
     private HttpEntity<Void> makeAuthEntity(String authToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authToken);
