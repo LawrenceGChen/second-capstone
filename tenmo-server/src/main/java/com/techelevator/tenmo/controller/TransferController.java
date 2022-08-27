@@ -2,29 +2,33 @@ package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.TransferDao;
+import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.exception.AccountNotFoundException;
 import com.techelevator.tenmo.exception.InvalidTransferException;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.TransferDTO;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
 public class TransferController {
     private TransferDao transferDao;
     private AccountDao accountDao;
+    private UserDao userDao;
 
-    public TransferController(TransferDao transferDao, AccountDao accountDao){
+    public TransferController(TransferDao transferDao, AccountDao accountDao, UserDao userDao){
         this.transferDao=transferDao;
         this.accountDao=accountDao;
+        this.userDao=userDao;
     }
 
     @PostMapping(path="/transfer/send")
@@ -38,7 +42,12 @@ public class TransferController {
         }
     }
 
-    //TODO Implment API GetMapping method to return information from list of TransferDTOs
+    //TODO Implement API GetMapping method to return information from list of TransferDTOs
+    @GetMapping("/myAccount/transfers")
+    public List<TransferDTO> getMyTransfers(Principal principal){
+        User myUser = userDao.findByUsername(principal.getName());
+        return transferDao.getTransfersByUser(myUser);
+    }
 
     private boolean validTransfer(Transfer transfer, Principal principal){
         return sufficientBalance(transfer) && validAccounts(transfer, principal);
