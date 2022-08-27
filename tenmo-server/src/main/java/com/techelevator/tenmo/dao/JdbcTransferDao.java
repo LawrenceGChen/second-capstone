@@ -5,6 +5,7 @@ import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.TransferDTO;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
+import org.intellij.lang.annotations.Language;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -25,6 +26,7 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public Transfer create(Transfer transfer) {
+        @Language("SQL")
         String sql =
                 "BEGIN TRANSACTION;" +
                 "UPDATE account SET balance = balance - ? WHERE account_id=?;" +
@@ -53,6 +55,7 @@ public class JdbcTransferDao implements TransferDao{
     @Override
     public List<TransferDTO> getTransfersByUser(User user) {
         List<TransferDTO> transferDTOs=new ArrayList<>();
+        @Language("SQL")
         String sql="SELECT transfer.transfer_id,tenmo_user.username,transfer.amount " +
                 "FROM transfer " +
                 "JOIN account ON transfer.account_to = account.account_id " +
@@ -73,6 +76,16 @@ public class JdbcTransferDao implements TransferDao{
         }
         Collections.sort(transferDTOs);
         return transferDTOs;
+    }
+
+    @Override
+    public TransferDTO getTransferById(Long id){
+        TransferDTO transferDTO=new TransferDTO();
+        //Todo Input sql Query for transfer by ID
+        @Language("SQL")
+        String sql="";
+        transferDTO=jdbcTemplate.queryForObject(sql,TransferDTO.class,id);
+        return transferDTO;
     }
 
     private TransferDTO mapRowToTransferDTOSent(SqlRowSet rs,User user) {

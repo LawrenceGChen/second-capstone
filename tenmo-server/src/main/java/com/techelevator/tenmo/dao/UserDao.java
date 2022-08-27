@@ -18,4 +18,6 @@ public interface UserDao {
     List<User> findAllUsernamesAndIds(Principal principal);
 
     User findByUsernameWithoutPassword(String username);
+
+    String findUsernameByAccountId(Long accountId);
 }

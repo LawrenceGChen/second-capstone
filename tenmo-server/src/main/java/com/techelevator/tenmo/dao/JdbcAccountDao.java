@@ -3,6 +3,7 @@ package com.techelevator.tenmo.dao;
 import com.techelevator.tenmo.exception.AccountNotFoundException;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.User;
+import org.intellij.lang.annotations.Language;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ public class JdbcAccountDao implements AccountDao{
     @Override
     public List<Account> findAllOther() {
         List<Account> accounts=new ArrayList<>();
+        @Language("SQL")
         String sql= "SELECT account_id, user_id, balance FROM account;";
         SqlRowSet results=jdbcTemplate.queryForRowSet(sql);
         while(results.next()){
@@ -35,6 +37,7 @@ public class JdbcAccountDao implements AccountDao{
 
     @Override
     public Account findAccountByUserId(User user) throws AccountNotFoundException {
+        @Language("SQL")
         String sql="SELECT account_id, user_id, balance FROM account WHERE user_id = ?;";
         SqlRowSet rowSet= jdbcTemplate.queryForRowSet(sql,user.getUserId());
         if(rowSet.next()){
@@ -45,6 +48,7 @@ public class JdbcAccountDao implements AccountDao{
 
     @Override
     public Account findAccountByUsername(String username) throws AccountNotFoundException {
+        @Language("SQL")
         String sql="SELECT a.account_id, a.user_id, a.balance FROM tenmo_user tu JOIN account a ON a.user_id = tu.user_id WHERE tu.username = ?;";
         SqlRowSet rowSet= jdbcTemplate.queryForRowSet(sql, username);
         if(rowSet.next()){
@@ -56,6 +60,7 @@ public class JdbcAccountDao implements AccountDao{
 
     @Override
     public Account findAccountByAccountId(Long accountId) throws AccountNotFoundException {
+        @Language("SQL")
         String sql="SELECT account_id, user_id, balance FROM account WHERE account_id=?";
         SqlRowSet rowSet=jdbcTemplate.queryForRowSet(sql,accountId);
         if(rowSet.next()){

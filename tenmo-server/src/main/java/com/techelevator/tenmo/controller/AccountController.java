@@ -38,6 +38,5 @@ public class AccountController {
         List<Account> accounts = accountDao.findAllOther();
         accounts.remove(currentAccount);
         return accounts;
-
     }
 }

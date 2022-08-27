@@ -10,4 +10,6 @@ public interface TransferDao {
     Transfer create(Transfer transfer);
 
     List<TransferDTO> getTransfersByUser(User user);
+
+    TransferDTO getTransferById(Long id);
 }

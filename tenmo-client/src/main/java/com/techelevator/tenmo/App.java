@@ -101,6 +101,8 @@ public class App {
 		// TODO Auto-generated method stub
         TransferDTO[] transferDTOS = transferService.getMyTransfers(currentUser);
         consoleService.printTransferHistory(transferDTOS);
+        Long transferId=consoleService.promptForLong("Please enter transfer ID to view details (0 to cancel): ");
+
 	}
 
 	private void viewPendingRequests() {
