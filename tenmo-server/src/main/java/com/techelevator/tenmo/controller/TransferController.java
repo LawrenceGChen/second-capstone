@@ -42,11 +42,18 @@ public class TransferController {
         }
     }
 
-    //TODO Implement API GetMapping method to return information from list of TransferDTOs
     @GetMapping("/myAccount/transfers")
     public List<TransferDTO> getMyTransfers(Principal principal){
         User myUser = userDao.findByUsername(principal.getName());
         return transferDao.getTransfersByUser(myUser);
+    }
+
+    @GetMapping("/myAccount/transfers/{id}")
+    public TransferDTO getTransferById(@PathVariable Long transferId,Principal principal){
+        TransferDTO transferDTO=transferDao.getTransferById(transferId);
+        transferDTO.setUsernameFrom(userDao.findUsernameByAccountId(transferDTO.getAccountFromId()));
+        transferDTO.setUsernameTo(userDao.findUsernameByAccountId(transferDTO.getAccountToId()));
+        return transferDTO;
     }
 
     private boolean validTransfer(Transfer transfer, Principal principal){

@@ -80,10 +80,13 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public TransferDTO getTransferById(Long id){
-        TransferDTO transferDTO=new TransferDTO();
-        //Todo Input sql Query for transfer by ID
+        TransferDTO transferDTO;
         @Language("SQL")
-        String sql="";
+        String sql="SELECT t.transfer_id, tt.transfer_type_desc, ts.transfer_status_desc, t.amount, t.account_from, t.account_to " +
+                "FROM transfer t " +
+                "JOIN transfer_status ts ON ts.transfer_status_id = t.transfer_status_id " +
+                "JOIN transfer_type tt ON tt.transfer_type_id = t.transfer_type_id " +
+                "WHERE t.transfer_id = ?;";
         transferDTO=jdbcTemplate.queryForObject(sql,TransferDTO.class,id);
         return transferDTO;
     }

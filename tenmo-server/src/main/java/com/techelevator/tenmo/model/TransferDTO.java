@@ -9,6 +9,10 @@ public class TransferDTO implements Comparable<TransferDTO>{
     private String usernameFrom;
     @NotEmpty
     private String usernameTo;
+    @Positive
+    private Long accountFromId;
+    @Positive
+    private Long accountToId;
     @Min(value=1)
     @Max(value=2)
     private Long transferTypeId;
@@ -17,7 +21,6 @@ public class TransferDTO implements Comparable<TransferDTO>{
     private Long transferStatusId;
     @Positive
     private BigDecimal amount;
-
     private boolean fromPrincipal;
 
     public boolean isFromPrincipal() {
@@ -26,6 +29,22 @@ public class TransferDTO implements Comparable<TransferDTO>{
 
     public void setFromPrincipal(boolean fromPrincipal) {
         this.fromPrincipal = fromPrincipal;
+    }
+
+    public Long getAccountFromId() {
+        return accountFromId;
+    }
+
+    public void setAccountFromId(Long accountFromId) {
+        this.accountFromId = accountFromId;
+    }
+
+    public Long getAccountToId() {
+        return accountToId;
+    }
+
+    public void setAccountToId(Long accountToId) {
+        this.accountToId = accountToId;
     }
 
     public Long getTransferId() {
