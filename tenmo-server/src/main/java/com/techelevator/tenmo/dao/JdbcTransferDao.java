@@ -2,10 +2,17 @@ package com.techelevator.tenmo.dao;
 
 
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.TransferDTO;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class JdbcTransferDao implements TransferDao{
@@ -40,5 +47,48 @@ public class JdbcTransferDao implements TransferDao{
             BasicLogger.log(e.getMessage());
         }
         return newTransfer;
+    }
+
+    @Override
+    public List<TransferDTO> getTransfersByUser(User user) {
+        List<TransferDTO> transferDTOs=new ArrayList<>();
+        String sql="SELECT transfer.transfer_id,tenmo_user.username,transfer.amount " +
+                "FROM transfer " +
+                "JOIN account ON transfer.account_to = account.account_id " +
+                "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
+                "WHERE transfer.account_from=(SELECT account_id FROM account JOIN tenmo_user ON account.user_id=tenmo_user.user_id WHERE tenmo_user.user_id=?)";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user.getUserId());
+        while(results.next()){
+            transferDTOs.add(mapRowToTransferDTOSent(results,user));
+        }
+        sql="SELECT transfer.transfer_id,tenmo_user.username,transfer.amount " +
+                "FROM transfer " +
+                "JOIN account ON transfer.account_from = account.account_id " +
+                "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
+                "WHERE transfer.account_from=(SELECT account_id FROM account JOIN tenmo_user ON account.user_id=tenmo_user.user_id WHERE tenmo_user.user_id=?)";
+        results = jdbcTemplate.queryForRowSet(sql, user.getUserId());
+        while(results.next()){
+            transferDTOs.add(mapRowToTransferDTOReceived(results,user));
+        }
+        Collections.sort(transferDTOs);
+        return transferDTOs;
+    }
+
+    private TransferDTO mapRowToTransferDTOSent(SqlRowSet rs,User user) {
+        TransferDTO transferDTO=new TransferDTO();
+        transferDTO.setTransferId(rs.getLong("transfer_id"));
+        transferDTO.setUsernameFrom(user.getUsername());
+        transferDTO.setUsernameTo(rs.getString("username"));
+        transferDTO.setAmount(rs.getBigDecimal("amount"));
+        return transferDTO;
+    }
+
+    private TransferDTO mapRowToTransferDTOReceived(SqlRowSet rs, User user) {
+        TransferDTO transferDTO=new TransferDTO();
+        transferDTO.setTransferId(rs.getLong("transfer_id"));
+        transferDTO.setUsernameFrom(rs.getString("username"));
+        transferDTO.setUsernameTo(user.getUsername());
+        transferDTO.setAmount(rs.getBigDecimal("amount"));
+        return transferDTO;
     }
 }

@@ -38,6 +38,8 @@ public class TransferController {
         }
     }
 
+    //TODO Implment API GetMapping method to return information from list of TransferDTOs
+
     private boolean validTransfer(Transfer transfer, Principal principal){
         return sufficientBalance(transfer) && validAccounts(transfer, principal);
     }
