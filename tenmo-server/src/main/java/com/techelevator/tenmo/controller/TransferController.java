@@ -5,6 +5,7 @@ import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.exception.AccountNotFoundException;
 import com.techelevator.tenmo.exception.InvalidTransferException;
+import com.techelevator.tenmo.exception.TransferNotFoundException;
 import com.techelevator.tenmo.exception.UnauthorizedException;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
@@ -56,7 +57,7 @@ public class TransferController {
         TransferDTO transferDTO=transferDao.getTransferById(transferId);
 
         if (Objects.isNull(transferDTO)){
-            throw new InvalidTransferException("Something went wrong");
+            throw new TransferNotFoundException("Transfer not found");
         }
         transferDTO.setUsernameFrom(userDao.findUsernameByAccountId(transferDTO.getAccountFromId()));
         transferDTO.setUsernameTo(userDao.findUsernameByAccountId(transferDTO.getAccountToId()));
