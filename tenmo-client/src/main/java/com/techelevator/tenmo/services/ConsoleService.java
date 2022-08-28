@@ -67,9 +67,13 @@ public class ConsoleService {
         System.out.println("Transfers");
         System.out.println("ID          From/To                 Amount");
         System.out.println("-------------------------------------------");
-        for (TransferDTO transferDTO :
-                transferDTOS) {
-            transferDTO.printMyTransfer();
+        if (transferDTOS.length==0){
+            System.out.println("No transfers found");
+        } else {
+            for (TransferDTO transferDTO :
+                    transferDTOS) {
+                transferDTO.printMyTransfer();
+            }
         }
         System.out.println("---------");
 
