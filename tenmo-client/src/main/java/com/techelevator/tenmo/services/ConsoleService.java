@@ -27,28 +27,30 @@ public class ConsoleService {
     }
 
     public void printGreeting() {
-        System.out.println("*********************");
-        System.out.println("* Welcome to TEnmo! *");
-        System.out.println("*********************");
+        StringBuilder output = new StringBuilder();
+        output.append("*********************\n");
+        output.append("* Welcome to TEnmo! *\n");
+        output.append("*********************\n");
+        System.out.println(output);
     }
 
     public void printLoginMenu() {
-        System.out.println();
-        System.out.println("1: Register");
-        System.out.println("2: Login");
-        System.out.println("0: Exit");
-        System.out.println();
+        StringBuilder output = new StringBuilder();
+        output.append("\n1: Register\n");
+        output.append("2: Login\n");
+        output.append("0: Exit\n");
+        System.out.println(output);
     }
 
     public void printMainMenu() {
-        System.out.println();
-        System.out.println("1: View your current balance");
-        System.out.println("2: View your past transfers");
-        System.out.println("3: View your pending requests");
-        System.out.println("4: Send TE bucks");
-        System.out.println("5: Request TE bucks");
-        System.out.println("0: Exit");
-        System.out.println();
+        StringBuilder output = new StringBuilder();
+        output.append("\n1: View your current balance\n");
+        output.append("2: View your past transfers\n");
+        output.append("3: View your pending requests\n");
+        output.append("4: Send TE bucks\n");
+        output.append("5: Request TE bucks\n");
+        output.append("0: Exit\n");
+        System.out.println(output);
     }
 
     public void printSendBucksMenu(User[] users, User currentUser){
@@ -58,7 +60,6 @@ public class ConsoleService {
         System.out.println("-------------------------------------------");
         printUsersIdAndUsername(users, currentUser);
         System.out.println("---------");
-
     }
 
     public void printTransferHistory(TransferDTO[] transferDTOS){
