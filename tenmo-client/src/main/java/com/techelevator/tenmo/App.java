@@ -98,11 +98,24 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
         TransferDTO[] transferDTOS = transferService.getMyTransfers(currentUser);
         consoleService.printTransferHistory(transferDTOS);
-        Long transferId=consoleService.promptForLong("Please enter transfer ID to view details (0 to cancel): ");
 
+        long transferId= -1L;
+        while (transferId!=0L){
+            transferId = consoleService.promptForLong("Please enter transfer ID to view details (0 to cancel): ");
+            if (transferId>0L){
+                TransferDTO transferDTO = transferService.getTransferById(currentUser, transferId);
+                //handle null/wrong transferId
+                //print transfer details
+                System.out.println("Transfer found = " + !Objects.isNull(transferDTO));
+            } else if (transferId==0L) {
+                continue;
+            } else {
+                System.out.println("Invalid transfer ID\n");
+            }
+//            consoleService.pause();
+        }
 	}
 
 	private void viewPendingRequests() {

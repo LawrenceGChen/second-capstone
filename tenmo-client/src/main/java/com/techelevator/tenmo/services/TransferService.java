@@ -52,7 +52,11 @@ public class TransferService {
     public TransferDTO[] getMyTransfers(AuthenticatedUser user){
         TransferDTO[] transferDTOS = null;
         try {
-            ResponseEntity<TransferDTO[]> response = restTemplate.exchange(BASE_URL+"/myAccount/transfers", HttpMethod.GET, makeAuthEntity(user.getToken()), TransferDTO[].class);
+            ResponseEntity<TransferDTO[]> response =
+                    restTemplate.exchange(
+                            BASE_URL+"/myAccount/transfers",
+                            HttpMethod.GET, makeAuthEntity(user.getToken()),
+                            TransferDTO[].class);
             transferDTOS = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e){
             BasicLogger.log(e.getMessage());
@@ -60,8 +64,18 @@ public class TransferService {
         return transferDTOS;
     }
 
-    public TransferDTO getTransferById(AuthenticatedUser user){
-        TransferDTO transferDTO=new TransferDTO();
+    public TransferDTO getTransferById(AuthenticatedUser user, Long transferId){
+        TransferDTO transferDTO=null;
+        try {
+            ResponseEntity<TransferDTO> response =
+                    restTemplate.exchange(
+                            BASE_URL+"myAccount/transfers/"+transferId,
+                            HttpMethod.GET,makeAuthEntity(user.getToken()),
+                            TransferDTO.class);
+            transferDTO=response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e){
+            BasicLogger.log(e.getMessage());
+        }
 
         return transferDTO;
     }
