@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
@@ -53,6 +54,10 @@ public class TransferController {
     @GetMapping("/myAccount/transfers/{transferId}")
     public TransferDTO getTransferById(@PathVariable Long transferId,Principal principal) throws UnauthorizedException {
         TransferDTO transferDTO=transferDao.getTransferById(transferId);
+
+        if (Objects.isNull(transferDTO)){
+            throw new InvalidTransferException("Something went wrong");
+        }
         transferDTO.setUsernameFrom(userDao.findUsernameByAccountId(transferDTO.getAccountFromId()));
         transferDTO.setUsernameTo(userDao.findUsernameByAccountId(transferDTO.getAccountToId()));
 
