@@ -88,4 +88,17 @@ public class TransferDTO implements Comparable<TransferDTO>{
         }
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "TransferDTO{" +
+                "transferId=" + transferId +
+                ", usernameFrom='" + usernameFrom + '\'' +
+                ", usernameTo='" + usernameTo + '\'' +
+                ", transferTypeId=" + transferTypeId +
+                ", transferStatusId=" + transferStatusId +
+                ", amount=" + amount +
+                ", fromPrincipal=" + fromPrincipal +
+                '}';
+    }
 }

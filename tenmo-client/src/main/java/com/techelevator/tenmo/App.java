@@ -106,15 +106,16 @@ public class App {
             transferId = consoleService.promptForLong("Please enter transfer ID to view details (0 to cancel): ");
             if (transferId>0L){
                 TransferDTO transferDTO = transferService.getTransferById(currentUser, transferId);
-                //handle null/wrong transferId
-                //print transfer details
-                System.out.println("Transfer found = " + !Objects.isNull(transferDTO));
+                if (Objects.isNull(transferDTO)){
+                    System.out.println("Invalid transfer ID\n");
+                } else {
+                    consoleService.printTransferDetails(transferDTO);
+                }
             } else if (transferId==0L) {
                 continue;
             } else {
                 System.out.println("Invalid transfer ID\n");
             }
-//            consoleService.pause();
         }
 	}
 

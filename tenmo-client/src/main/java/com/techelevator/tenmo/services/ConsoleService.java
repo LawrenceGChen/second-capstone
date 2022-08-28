@@ -4,8 +4,10 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.TransferDTO;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.util.BasicLogger;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -131,5 +133,33 @@ public class ConsoleService {
                         System.out.printf("%-12d%s%n",user.getUserId(),user.getUsername());
                     }
                 }
+    }
+
+    public void printTransferDetails(TransferDTO transferDTO) {
+        System.out.println("-------------------------------------------");
+        System.out.println("Transfer Details");
+        System.out.println("-------------------------------------------");
+        System.out.println(" Id: " + transferDTO.getTransferId());
+        System.out.println(" From: " + transferDTO.getUsernameFrom());
+        System.out.println(" To: " + transferDTO.getUsernameTo());
+        if (transferDTO.getTransferTypeId()==1){
+            System.out.println(" Type: Request");
+        } else {
+            System.out.println(" Type: Send");
+        }
+
+        System.out.print(" Status: ");
+        if (transferDTO.getTransferStatusId()==1){
+            System.out.println("Pending");
+        } else if (transferDTO.getTransferStatusId()==2) {
+            System.out.println("Approved");
+        } else if (transferDTO.getTransferStatusId()==3){
+            System.out.println("Rejected");
+        } else {
+            BasicLogger.log("Invalid TransferStatusId for transfer ID" + transferDTO.getTransferId() + " || " + transferDTO.toString());
+        }
+
+        String formattedBalance = NumberFormat.getCurrencyInstance().format(transferDTO.getAmount());
+        System.out.println(" Amount: " + formattedBalance);
     }
 }
